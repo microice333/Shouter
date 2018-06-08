@@ -1,19 +1,19 @@
 version: "3.3"
 services:
-  users:
+  messages:
     build: .
-    container_name: users
+    container_name: messages
     ports:
-      - 8001:80
+      - 8003:80
     depends_on:
       - redis
     networks:
-      - users-1
+      - messages-1
 
   redis:
     image: redis:4.0.2
     networks:
-      - users-1
+      - messages-1
 
 networks:
-    users-1:
+    messages-1:
