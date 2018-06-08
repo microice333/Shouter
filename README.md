@@ -1,4 +1,13 @@
 # Shouter
 Shouter is project based on microservices architecture
 
-Type make start to run microservices.
+Run users:
+cd microservices/users;
+make build;
+make start;
+
+Stop users:
+make stop;
+
+Remove users' containers:
+make rm;
