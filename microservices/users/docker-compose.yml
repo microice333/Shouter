@@ -1,0 +1,19 @@
+version: "3.3"
+services:
+  users:
+    build: .
+    container_name: users
+    ports:
+      - 80:80
+    depends_on:
+      - redis
+    networks:
+      - users-1
+
+  redis:
+    image: redis:4.0.2
+    networks:
+      - users-1
+
+networks:
+    users-1:
