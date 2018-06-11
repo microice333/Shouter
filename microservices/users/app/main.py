@@ -15,11 +15,9 @@ def user(username):
         mail = redis.get(f"user/mail/{username}")
         relations = requests.get(f"http://relations:80/relations/{username}").json()
         messages = requests.get(f"http://messages:80/messages/{username}").json()
-        print("du[a")
-        print(relations)
 
         if name:
-            return jsonify({'mail': mail, 'username': name, 'relations': relations, 'messages': messages})
+            return jsonify({'mail': mail, 'username': name, **relations, **messages})
         return jsonify()
     elif request.method == 'PUT':
         name = request.get_json()['name']

@@ -7,15 +7,22 @@ redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2, ch
 app = Flask(__name__)
 
 
+@app.route("/messages/", methods=['GET'])
+def all_messages():
+    messages = []
+
+    for k in redis.keys(pattern='messages/*'):
+        messages += redis.lrange(k, 0, -1)
+
+    return jsonify({'messages': messages})
+
+
 @app.route("/messages/<username>", methods=['GET', 'PUT'])
-def user(username):
+def user_messages(username):
     if request.method == 'GET':
         messages = redis.lrange(f"messages/{username}", 0, -1)
 
-        if messages:
-            return jsonify({'messages': messages})
-
-        return jsonify()
+        return jsonify({'messages': len(messages)})
     elif request.method == 'PUT':
         message = request.get_json()['message']
 
