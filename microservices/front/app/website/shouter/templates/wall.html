@@ -6,7 +6,27 @@
 
 <article class="container content">
     {% if user.is_authenticated %}
-    <p> Widaj zautentukowany uzytkowniku. :)</p>
+    <p> Widaj zautentukowany uzytkowniku. :) Napisz cos</p>
+    <form action="{% url 'wall' %}" method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="message">Napisz coś</label>
+        <input type="text" class="form-control" id="message" name="message" placeholder="Co u ciebie?">
+      </div>
+      <button type="submit" class="btn btn-primary">Wyślij</button>
+    </form>
+    <div class="card-column">
+      {% for message in messages %}
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Card title</h4>
+          <p class="card-text">{{ message }}</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
     {% else %}
     <p>Nic nie zobaczysz. Zaloguj się.</p>
     {% endif %}

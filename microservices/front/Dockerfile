@@ -46,6 +46,10 @@ COPY supervisor-app.conf /etc/supervisor/conf.d/
 COPY app/requirements.txt /home/docker/code/app/
 RUN pip3 install -r /home/docker/code/app/requirements.txt
 
+RUN pip3 install --upgrade urllib3 chardet
+COPY ./app/requests /home/docker/code/app/requests
+RUN pip3 install /home/docker/code/app/requests
+
 # add (the rest of) our code
 COPY . /home/docker/code/
 

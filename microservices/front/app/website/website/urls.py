@@ -27,4 +27,6 @@ urlpatterns = [
     path('', shouter.views.login, name='login'),
     path('register/', shouter.views.register, name='register'),
     path('profile/', shouter.views.profile, name='profile'),
+    path('dodaj/', shouter.views.dodaj, name='dodaj'),
+    path('pokaz/', shouter.views.pokaz, name='pokaz'),
 ]
