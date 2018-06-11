@@ -1,7 +1,5 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 from redis import Redis, RedisError
-import os
-import socket
 
 # Connect to Redis
 redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2)
@@ -9,19 +7,24 @@ redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2)
 app = Flask(__name__)
 
 
-@app.route("/")
-def hello():
-    try:
-        visits = redis.incr("counter")
-    except RedisError:
-        visits = "<i>cannot connect to Redis, counter disabled</i>"
+@app.route("/user/<user_id>", methods=['GET', 'PUT'])
+def user(user_id):
+    if request.method == 'GET':
+        name = redis.get(f"user/{user_id}")
+        mail = redis.get(f"user/mail/{user_id}")
 
-    html = "<h3>Hello {name}!</h3>" \
-           "<b>Hostname:</b> {hostname}<br/>" \
-           "<b>Visits:</b> {visits}"
-    return html.format(name=os.getenv("NAME", "world"), hostname=socket.gethostname(), visits=visits)
+        if name:
+            return jsonify({'mail': mail.decode('UTF-8'), 'username': name.decode('UTF-8')})
+        return jsonify()
+    elif request.method == 'PUT':
+        name = request.get_json()['name']
+        mail = request.get_json()['mail']
+
+        redis.set(f"user/{user_id}", name)
+        redis.set(f"user/mail/{user_id}", mail)
+
+        return jsonify({'user_id': user_id})
 
 
 if __name__ == "__main__":
-    # Only for debugging while developing
-    app.run(host='0.0.0.0', debug=True, port=80)
+    app.run(host='0.0.0.0', port=80)
