@@ -7,15 +7,15 @@ redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2, ch
 app = Flask(__name__)
 
 
-@app.route("/messages/", methods=['GET'])
-def all_messages():
+@app.route("/messages_for/<username>", methods=['GET'])
+def all_messages(username):
     messages = []
 
     for k in redis.keys(pattern='messages/*'):
-        author = k[len('messages/'):]
-
-        for message in redis.lrange(k, 0, -1):
-            messages.append({'message': message, 'author': author})
+        author = k.split('/')[1]
+        for message in redis.lrange(f"messages/{author}", 0, -1):
+            liked = username in redis.smembers(f"likes/{author}/{message}")
+            messages.append({'message': message, 'author': author, 'liked': liked})
 
     return jsonify({'messages': messages})
 
@@ -33,6 +33,16 @@ def user_messages(username):
         messages = redis.lrange(f"messages/{username}", 0, -1)
 
         return jsonify({'messages': messages})
+
+
+@app.route("/like/<username>", methods=['PUT'])
+def like(username):
+    author = request.get_json()['author']
+    message = request.get_json()['message']
+
+    redis.sadd(f"likes/{author}/{message}", username)
+
+    return jsonify({'message': message, 'author': author, 'liked': True})
 
 
 if __name__ == "__main__":
