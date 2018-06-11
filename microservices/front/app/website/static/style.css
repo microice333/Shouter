@@ -1,0 +1,17 @@
+
+table {
+    margin-top: 20px;
+}
+
+.navbar-text {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.nav-login {
+  text-align: right;
+}
+
+.content {
+  margin-top: 100px;
+}

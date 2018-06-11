@@ -15,7 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import logout
+from django.conf import settings
+import shouter.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('logout/', logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
+    path('wall/', shouter.views.wall, name = 'wall'),
+    path('', shouter.views.login, name='login'),
+    path('register/', shouter.views.register, name='register'),
+    path('profile/', shouter.views.profile, name='profile'),
 ]
