@@ -1,0 +1,26 @@
+{% extends 'template.html' %}
+
+{% block subtitle %}Login{% endblock %}
+
+{% block content %}
+<div class="container content">
+  <p>
+    {% if error %}
+    Niepoprawna nazwa użytkownika lub hasło.
+    {% endif %}
+  </p>
+  </form>
+  <form action="{% url 'login' %}" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="name">Nazwa użytkownika:</label>
+      <input type="text" class="form-control" id="name" name="username" placeholder="Nazwa użytkownika">
+    </div>
+    <div class="form-group">
+      <label for="pwd">Password:</label>
+      <input type="password" class="form-control" id="pwd" name="password" placeholder="Hasło">
+    </div>
+       <button type="submit" class="btn btn-primary">Zaloguj</button>
+  </form>
+</div>
+{% endblock %}

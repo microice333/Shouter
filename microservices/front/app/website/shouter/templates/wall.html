@@ -1,0 +1,14 @@
+{% extends 'template.html' %}
+
+{% block subtitile %}{% endblock %}
+
+{% block content %}
+
+<article class="container content">
+    {% if user.is_authenticated %}
+    <p> Widaj zautentukowany uzytkowniku. :)</p>
+    {% else %}
+    <p>Nic nie zobaczysz. Zaloguj się.</p>
+    {% endif %}
+</article>
+{% endblock %}
