@@ -40,10 +40,17 @@ def wall(request):
     if not request.user.is_authenticated:
         return HttpResponseForbidden("Najpierw sie zaloguj")
 
+    if request.method == "POST":
+        j = {'message' : request.POST['message']}
+        s = json.dumps(j)
+        h = {"Content-Type" : "application/json"}
+        r = requests.put('http://messages:80/messages/' + request.user.username, data = s, headers = h)
+
     wall = True
     url = 'http://messages:80/messages/' + request.user.username
     r = requests.get(url)
-    messages = r.json()
+    messages_raw = r.text
+    messages = r.json()['messages']
     return render(request, 'wall.html', locals())
 
 def profile(request):
