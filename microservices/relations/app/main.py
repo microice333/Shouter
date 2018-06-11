@@ -1,27 +1,29 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 from redis import Redis, RedisError
-import os
-import socket
 
 # Connect to Redis
-redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2)
+redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2, charset="utf-8", decode_responses=True)
 
 app = Flask(__name__)
 
 
-@app.route("/")
-def hello():
-    try:
-        visits = redis.incr("counter")
-    except RedisError:
-        visits = "<i>cannot connect to Redis, counter disabled</i>"
+@app.route("/relations/<username>", methods=['GET', 'PUT'])
+def user(username):
+    if request.method == 'GET':
+        relations = redis.smembers(f"relations/{username}")
 
-    html = "<h3>Hello {name}!</h3>" \
-           "<b>Hostname:</b> {hostname}<br/>" \
-           "<b>Visits:</b> {visits}"
-    return html.format(name=os.getenv("NAME", "world"), hostname=socket.gethostname(), visits=visits)
+        if relations:
+            return jsonify({'relations': list(relations)})
+
+        return jsonify()
+    elif request.method == 'PUT':
+        related_user = request.get_json()['related_username']
+
+        redis.sadd(f"relations/{username}", related_user)
+        relations = redis.smembers(f"relations/{username}")
+
+        return jsonify({'relations': list(relations)})
 
 
 if __name__ == "__main__":
-    # Only for debugging while developing
-    app.run(host='0.0.0.0', debug=True, port=80)
+    app.run(host='0.0.0.0', port=80)
