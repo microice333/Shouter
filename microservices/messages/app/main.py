@@ -12,7 +12,10 @@ def all_messages():
     messages = []
 
     for k in redis.keys(pattern='messages/*'):
-        messages += redis.lrange(k, 0, -1)
+        author = k[len('messages/'):]
+
+        for message in redis.lrange(k, 0, -1):
+            messages.append({'message': message, 'author': author})
 
     return jsonify({'messages': messages})
 
