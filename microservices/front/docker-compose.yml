@@ -5,3 +5,9 @@ services:
     container_name: website
     ports:
       - 80:80
+    networks:
+      - users_micro-1
+
+networks:
+  users_micro-1:
+    external: true

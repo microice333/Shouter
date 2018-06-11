@@ -8,6 +8,9 @@
     {% if user.is_authenticated %}
     <p> Widaj zautentukowany uzytkowniku. :)</p>
     <p> Znam twój username hehe :) : {{ user.username }} </p>
+    <h4> Całe info </h4>
+    <p>{{ url }}</p>
+    <p>{{ info }}</p>
     {% else %}
     <p>Nic nie zobaczysz. Zaloguj się.</p>
     {% endif %}
