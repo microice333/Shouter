@@ -83,7 +83,21 @@ def like(request):
     d = json.dumps({"idx" : request.POST['message_id']})
     h = {"Content-Type" : "application/json"}
     r = requests.put(url, data = d, headers = h)
-    return HttpResponse()
+
+@require_POST
+def unlike(request):
+    url = 'http://messages/like/' + request.user.username
+    d = json.dumps({"idx" : request.POST['message_id']})
+    h = {"Content-Type" : "application/json"}
+    r = requests.delete(url, data = d, headers = h)
+
+@require_POST
+def invite(request):
+    url = 'http://sent-invitations/' + request.user.username
+    d = json.dumps({"invited" : request.POST['invited']})
+    h = {"Content-Type" : "application/json"}
+    r = requests.delete(url, data = d, headers = h)
+
 
 def dodaj(request):
     j = {'name' : 'john', 'mail' : 'john'}

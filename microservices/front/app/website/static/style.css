@@ -16,10 +16,6 @@ table {
   margin-top: 100px;
 }
 
-.message {
-  width: 20em;
-}
-
-.card {
-  margin: 1em;
+form label, input, button {
+  padding: 0.5em;
 }

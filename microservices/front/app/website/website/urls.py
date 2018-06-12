@@ -27,7 +27,9 @@ urlpatterns = [
     path('', shouter.views.login, name='login'),
     path('register/', shouter.views.register, name='register'),
     path('profile/', shouter.views.profile, name='profile'),
-    path('ajax/like/', shouter.views.like, name='like'),
+    path('ajax/like/', shouter.views.like, name='ajax-like'),
+    path('ajax/unlike/', shouter.views.unlike, name='ajax-unlike'),
+    path('ajax/invite/', shouter.views.invite, name='ajax-invite'),
     path('dodaj/', shouter.views.dodaj, name='dodaj'),
     path('pokaz/', shouter.views.pokaz, name='pokaz'),
 ]

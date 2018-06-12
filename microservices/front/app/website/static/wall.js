@@ -42,9 +42,7 @@ function getCookie(name) {
 $().ready(function() {
 
     $('.like-btn').click(function() {
-        // alert($(this).attr('id').substring(8))
-        // $(this).text(liked);
-        if ($(this).attr('class').indexOf('disabled') < 0) {
+        if ($(this).hasClass('like')) {
             $.post('/ajax/like/',
                 {
                   'message_id': $(this).attr('id').substring(8),
@@ -54,6 +52,37 @@ $().ready(function() {
                   alert(res);
                 }
             );
+            $(this).removeClass("like btn-outline-primary").addClass("unlike btn-primary");
+            $(this).text("Unlike");
+        } else {
+          $.post('/ajax/unlike/',
+              {
+                'message_id': $(this).attr('id').substring(8),
+                'csrfmiddlewaretoken': getCookie('csrftoken'),
+              },
+              function(res) {
+                alert(res);
+              }
+          );
+          $(this).removeClass("unlike btn-primary").addClass("like btn-outline-primary");
+          $(this).text("Like");
         }
+    });
+
+    $('.invitation-btn').click(function() {
+        if (~($(this).hasClass('disabled'))) {
+            $.post('/ajax/invite/',
+                {
+                  'invited': $(this).attr('id').substring(11),
+                  'csrfmiddlewaretoken': getCookie('csrftoken'),
+                },
+                function(res) {
+                  alert("Send invitation");
+                }
+            );
+            var selector = '#' + $(this).attr('id') + '.invitation-btn';
+            $(selector).addClass("disabled");
+            $(selector).text("Invited");
+          }
     });
 });

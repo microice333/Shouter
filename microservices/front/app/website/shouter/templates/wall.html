@@ -1,6 +1,9 @@
 {% extends 'template.html' %}
 
-{% block js %}{% endblock %}
+{% load static %}
+{% block js %}
+
+{% endblock %}
 
 {% block subtitile %}{% endblock %}
 
@@ -9,30 +12,33 @@
 <article class="container content">
     {% if user.is_authenticated %}
     <p> Widaj zautentukowany uzytkowniku. :) Napisz cos</p>
-    <form action="{% url 'wall' %}" method="POST">
+    <form class="form-inline" action="{% url 'wall' %}" method="POST">
       {% csrf_token %}
       <div class="form-group">
         <label for="message">Napisz coś</label>
         <input type="text" class="form-control" id="message" name="message" placeholder="Co u ciebie?">
       </div>
-      <button type="submit" class="btn btn-primary">Wyślij</button>
+      <button type="submit" class="btn btn-outline-primary">Wyślij</button>
     </form>
-    <div class="card-column">
+    <div class="card-columns">
       {% for message in messages %}
-      <div class="card message">
+      <div class="card bg-light message">
         <div class="card-body">
           <h4 class="card-title">{{ message.author }}</h4>
           <p class="card-text">{{ message.message }}</p>
         </div>
         <div class="card-footer">
-          <button type="button" id="message-{%if message.id%}{{message.id}}{%endif%}"
+          <button type="button" id="message-{{message.id}}"
           {% if message.liked %}
-          class="btn btn-primary disabled like-btn">Liked
+          class="btn btn-primary btn-sm unlike like-btn">Unlike
           {% else %}
-          class="btn btn-outline-primary like-btn">Like
+          class="btn btn-outline-primary like btn-sm like-btn">Like
           {% endif %}
           </button>
-          <span class="like-nb">0</span>
+          <!-- <span class="like-nb">0</span> -->
+
+          <button type="button" id="invitation-{{message.author}}"
+              class="btn btn-default btn-sm invitation-btn">Add friend</button>
         </div>
       </div>
       {% endfor %}
