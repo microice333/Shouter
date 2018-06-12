@@ -23,6 +23,9 @@ def user(username):
         redis.sadd(f"relations/{related_user}", username)
         relations = redis.smembers(f"relations/{username}")
 
+        redis.srem(f"rec-invitations/{username}", related_user)
+        redis.srem(f"sent-invitations/{related_user}", username)
+
         return jsonify({'relations': list(relations)})
 
 
@@ -31,13 +34,13 @@ def sent_invitations(username):
     if request.method == 'PUT':
         invited = request.get_json()['invited']
 
-        redis.sadd(f"send-invitations/{username}", invited)
+        redis.sadd(f"sent-invitations/{username}", invited)
         redis.sadd(f"rec-invitations/{invited}", username)
-        s_invitations = redis.smembers(f"send-invitations/{username}")
+        s_invitations = redis.smembers(f"sent-invitations/{username}")
 
         return jsonify({'invitations': list(s_invitations)})
     elif request.method == 'GET':
-        s_invitations = redis.smembers(f"send-invitations/{username}")
+        s_invitations = redis.smembers(f"sent-invitations/{username}")
 
         return jsonify({'invitations': list(s_invitations)})
 
