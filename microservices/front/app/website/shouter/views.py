@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from .forms import RegistrationForm
 import requests, json
 from slugify import slugify
+import pika
 
 # Create your views here.
 
@@ -98,6 +99,21 @@ def profile(request):
 
 @require_POST
 def like(request):
+    connection = pika.BlockingConnection(pika.ConnectionParameters(
+        host='message-broker'))
+    channel = connection.channel()
+
+    channel.exchange_declare(exchange='enter-game',
+                             exchange_type='fanout')
+
+    message = 'Entered the game'
+    channel.basic_publish(exchange='enter-game',
+                          routing_key='',
+                          body=message)
+    print(" [x] Sent enter-game message")
+
+    connection.close()
+
     url = 'http://messages/like/' + request.user.username
     d = json.dumps({"idx" : request.POST['message_id']})
     h = {"Content-Type" : "application/json"}

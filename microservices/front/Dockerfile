@@ -33,7 +33,7 @@ RUN apt-get update && \
    rm -rf /var/lib/apt/lists/*
 
 # install uwsgi now because it takes a little while
-RUN pip3 install uwsgi
+RUN pip3 install uwsgi pika
 
 # setup all the configfiles
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf

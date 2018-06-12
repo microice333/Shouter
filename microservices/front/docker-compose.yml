@@ -8,6 +8,12 @@ services:
     networks:
       - internal-1
 
+  message-broker:
+    image: "rabbitmq:3.6.14-management"
+    ports:
+      - 5672:5672
+      - 15672:15672
+
 networks:
   internal-1:
     external: true
