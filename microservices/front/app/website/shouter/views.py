@@ -47,7 +47,7 @@ def wall(request):
         r = requests.put('http://messages:80/messages/' + request.user.username, data = s, headers = h)
 
     wall = True
-    url = 'http://messages:80/messages/' + request.user.username
+    url = 'http://messages:80/messages_for/' + request.user.username
     r = requests.get(url)
     messages_raw = r.text
     messages = r.json()['messages']
@@ -77,14 +77,19 @@ def profile(request):
 
     return render(request, 'profile.html', locals())
 
+@require_POST
+def like(request):
+    url = 'http://messages/like/' + request.user.username
+    d = json.dumps({"idx" : request.POST['message_id']})
+    h = {"Content-Type" : "application/json"}
+    r = requests.put(url, data = d, headers = h)
+    return HttpResponse()
+
 def dodaj(request):
     j = {'name' : 'john', 'mail' : 'john'}
     s = json.dumps(j)
-    print(s)
     h = {"Content-Type" : "application/json"}
     r = requests.put('http://users:80/user/john', data = s, headers = h)
-    print(r.url)
-    print(r.text)
 
     return HttpResponse(r.text)
 
@@ -92,6 +97,5 @@ def pokaz(request):
     h = {"Content-Type" : "application/json"}
     r = requests.get('http://users:80/user/john')
     print(r.url)
-    # print(r.json())
 
     return HttpResponse(r.text)

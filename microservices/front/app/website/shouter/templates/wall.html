@@ -1,5 +1,7 @@
 {% extends 'template.html' %}
 
+{% block js %}{% endblock %}
+
 {% block subtitile %}{% endblock %}
 
 {% block content %}
@@ -17,12 +19,20 @@
     </form>
     <div class="card-column">
       {% for message in messages %}
-      <div class="card">
+      <div class="card message">
         <div class="card-body">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">{{ message }}</p>
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
+          <h4 class="card-title">{{ message.author }}</h4>
+          <p class="card-text">{{ message.message }}</p>
+        </div>
+        <div class="card-footer">
+          <button type="button" id="message-{%if message.id%}{{message.id}}{%endif%}"
+          {% if message.liked %}
+          class="btn btn-primary disabled like-btn">Liked
+          {% else %}
+          class="btn btn-outline-primary like-btn">Like
+          {% endif %}
+          </button>
+          <span class="like-nb">0</span>
         </div>
       </div>
       {% endfor %}
