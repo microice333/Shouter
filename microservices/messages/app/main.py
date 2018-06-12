@@ -1,3 +1,4 @@
+import requests
 from flask import Flask, jsonify, request
 from redis import Redis, RedisError
 
@@ -11,13 +12,22 @@ app = Flask(__name__)
 def all_messages(username):
     messages = []
 
+    relations = requests.get(f"http://relations:80/relations/{username}").json()
+    if 'relations' in relations.keys():
+        relations = relations['relations']
+    else:
+        relations = []
+
+    relations.append(username)
+
     for k in redis.keys(pattern='messages_u/*'):
         author = k.split('/')[1]
 
-        for idx in redis.lrange(f"messages_u/{author}", 0, -1):
-            liked = username in redis.smembers(f"likes/{idx}")
-            message = redis.get(f"messages/{idx}")
-            messages.append({'message': message, 'author': author, 'liked': liked, 'id': idx})
+        if not author in relations:
+            for idx in redis.lrange(f"messages_u/{author}", 0, -1):
+                liked = username in redis.smembers(f"likes/{idx}")
+                message = redis.get(f"messages/{idx}")
+                messages.append({'message': message, 'author': author, 'liked': liked, 'id': idx})
 
     return jsonify({'messages': messages})
 
