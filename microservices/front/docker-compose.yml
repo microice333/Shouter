@@ -6,8 +6,8 @@ services:
     ports:
       - 80:80
     networks:
-      - users_micro-1
+      - internal-1
 
 networks:
-  users_micro-1:
+  internal-1:
     external: true

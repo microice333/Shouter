@@ -9,7 +9,7 @@ services:
       - redis
     networks:
       - messages-1
-      - users_micro-1
+      - internal-1
 
   redis:
     image: redis:4.0.2
@@ -17,6 +17,6 @@ services:
       - messages-1
 
 networks:
-  users_micro-1:
+  internal-1:
       external: true
   messages-1:

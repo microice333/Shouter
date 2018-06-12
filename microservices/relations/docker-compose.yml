@@ -8,7 +8,7 @@ services:
     depends_on:
       - redis
     networks:
-      - users_micro-1
+      - internal-1
       - relations-1
 
   redis:
@@ -17,6 +17,6 @@ services:
       - relations-1
 
 networks:
-    users_micro-1:
+    internal-1:
       external: true
     relations-1:

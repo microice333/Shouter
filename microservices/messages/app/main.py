@@ -35,14 +35,19 @@ def user_messages(username):
         return jsonify({'messages': messages})
 
 
-@app.route("/like/<username>", methods=['PUT'])
+@app.route("/like/<username>", methods=['PUT', 'DELETE'])
 def like(username):
     author = request.get_json()['author']
     message = request.get_json()['message']
 
-    redis.sadd(f"likes/{author}/{message}", username)
+    if request.method == 'PUT':
+        redis.sadd(f"likes/{author}/{message}", username)
 
-    return jsonify({'message': message, 'author': author, 'liked': True})
+        return jsonify({'message': message, 'author': author, 'liked': True})
+    elif request.method == 'DELETE':
+        redis.srem(f"likes/{author}/{message}", username)
+
+        return jsonify({'message': message, 'author': author, 'liked': False})
 
 
 if __name__ == "__main__":
