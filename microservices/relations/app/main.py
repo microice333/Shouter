@@ -20,9 +20,33 @@ def user(username):
         related_user = request.get_json()['related_username']
 
         redis.sadd(f"relations/{username}", related_user)
+        redis.sadd(f"relations/{related_user}", username)
         relations = redis.smembers(f"relations/{username}")
 
         return jsonify({'relations': list(relations)})
+
+
+@app.route("/sent-invitations/<username>", methods=['PUT', 'GET'])
+def sent_invitations(username):
+    if request.method == 'PUT':
+        invited = request.get_json()['invited']
+
+        redis.sadd(f"send-invitations/{username}", invited)
+        redis.sadd(f"rec-invitations/{invited}", username)
+        s_invitations = redis.smembers(f"send-invitations/{username}")
+
+        return jsonify({'invitations': list(s_invitations)})
+    elif request.method == 'GET':
+        s_invitations = redis.smembers(f"send-invitations/{username}")
+
+        return jsonify({'invitations': list(s_invitations)})
+
+
+@app.route("/received-invitations/<username>", methods=['GET'])
+def received_invitations(username):
+    invitations = redis.smembers(f"rec-invitations/{username}")
+
+    return jsonify({'invitations': list(invitations)})
 
 
 if __name__ == "__main__":
