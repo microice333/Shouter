@@ -70,8 +70,7 @@ $().ready(function() {
     });
 
     $('.invitation-btn').click(function() {
-        if (~($(this).hasClass('disabled'))) {
-            alert($(this).attr('id').substring(11))
+        if (!($(this).hasClass('disabled'))) {
             $.post('/ajax/invite/',
                 {
                   'invited': $(this).attr('id').substring(11),
@@ -84,6 +83,26 @@ $().ready(function() {
             var selector = '#' + $(this).attr('id') + '.invitation-btn';
             $(selector).addClass("disabled");
             $(selector).text("Invited");
+          }
+    });
+
+
+// profile.js
+
+    $('.accept-btn').click(function() {
+        if (!($(this).hasClass('disabled'))) {
+            alert($(this).attr('id').substring(7))
+            $.post('/ajax/accept/',
+                {
+                  'invited': $(this).attr('id').substring(7),
+                  'csrfmiddlewaretoken': getCookie('csrftoken'),
+                },
+                function(res) {
+                  alert(res);
+                }
+            );
+            $(this).addClass("disabled");
+            $(this).text("Accepted");
           }
     });
 });

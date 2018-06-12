@@ -71,26 +71,28 @@ def profile(request):
                 ('Email', info['mail']),
                 ('Number of published messages', info['messages'])]
 
-    url = 'http://relations:80/relations/' + request.user.username
-    r = requests.get(url)
-    names_raw = r.text
-
     url = 'http://relations:80/sent-invitations/' + request.user.username
     r = requests.get(url)
     invited_raw = r.text
+    invited = r.json()['invitations']
 
     url = 'http://relations:80/received-invitations/' + request.user.username
     r = requests.get(url)
     invitations_raw = r.text
-    # friends_names = r.json()['relations']
-    #
-    # friends_profiles = []
-    # for name in friends_names:
-    #     url = 'http://users:80/user/' + name
-    #     r = requests.get(url)
-    #     friends_profiles.append(r.text)
+    invitations = r.json()['invitations']
 
-    # friends = friends_profiles
+    url = 'http://relations:80/relations/' + request.user.username
+    r = requests.get(url)
+    names_raw = r.text
+    friends_names = r.json()['relations']
+
+    friends_profiles = []
+    for name in friends_names:
+        url = 'http://users:80/user/' + name
+        r = requests.get(url)
+        friends_profiles.append(r.json())
+
+    friends = friends_profiles
 
     return render(request, 'profile.html', locals())
 
@@ -112,6 +114,13 @@ def unlike(request):
 def invite(request):
     url = 'http://relations:80/sent-invitations/' + request.user.username
     d = json.dumps({"invited" : request.POST['invited']})
+    h = {"Content-Type" : "application/json"}
+    r = requests.put(url, data = d, headers = h)
+
+@require_POST
+def accept(request):
+    url = 'http://relations:80/relations/' + request.user.username
+    d = json.dumps({"related_username" : request.POST['invited']})
     h = {"Content-Type" : "application/json"}
     r = requests.put(url, data = d, headers = h)
 

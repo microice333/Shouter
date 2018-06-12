@@ -13,7 +13,7 @@
       {% for e in userinfo %}
         <tr>
           <th> {{ e.0 }} </th>
-          <th> {{ e.1 }} </th>
+          <td> {{ e.1 }} </td>
         </tr>
       {% endfor %}
     </table>
@@ -21,15 +21,36 @@
       <div class="row">
         <div class="col">
           <h4> Zaproszeni</h4>
+            <table class="table">
+              {% for name in invited %}
+              <tr><td>{{ name }}</td></tr>
+              {% endfor %}
+            </table>
             <p>{{ invited_raw }}</p>
         </div>
         <div class="col">
           <h4> Znajomi </h4>
-            <p>{{ friends }}</p>
+            <table class="table">
+              {% for f in friends %}
+              <tr>
+                <td>{{ f.username }}</td>
+                <td>{{ f.mail }}</td>
+              </tr>
+              {% endfor %}
+            </table>
             <p>{{ names_raw }}</p>
         </div>
         <div class="col">
           <h4> Oczekujace </h4>
+            <table class="table">
+              {% for name in invitations %}
+              <tr>
+                <td>{{ name }}</td>
+                <td><button type="button" id="accept-{{name}}"
+                    class="btn btn-default btn-sm accept-btn">Accept</button></td>
+              </tr>
+              {% endfor %}
+            </table>
             <p>{{ invitations_raw }}</p>
         </div>
       </div>
