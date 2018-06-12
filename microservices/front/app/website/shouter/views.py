@@ -51,6 +51,12 @@ def wall(request):
     r = requests.get(url)
     messages_raw = r.text
     messages = r.json()['messages']
+
+    url = 'http://relations:80/sent-invitations/' + request.user.username
+    r = requests.get(url)
+    invited_raw = r.text
+    invited = r.json()['invitations']
+
     return render(request, 'wall.html', locals())
 
 def profile(request):
@@ -60,11 +66,22 @@ def profile(request):
     profile = True
     url = 'http://users:80/user/' + request.user.username
     r = requests.get(url)
-    info = r.text
+    info = r.json()
+    userinfo = [('Username', info['username']),
+                ('Email', info['mail']),
+                ('Number of published messages', info['messages'])]
 
     url = 'http://relations:80/relations/' + request.user.username
     r = requests.get(url)
     names_raw = r.text
+
+    url = 'http://relations:80/sent-invitations/' + request.user.username
+    r = requests.get(url)
+    invited_raw = r.text
+
+    url = 'http://relations:80/received-invitations/' + request.user.username
+    r = requests.get(url)
+    invitations_raw = r.text
     # friends_names = r.json()['relations']
     #
     # friends_profiles = []
@@ -93,10 +110,10 @@ def unlike(request):
 
 @require_POST
 def invite(request):
-    url = 'http://sent-invitations/' + request.user.username
+    url = 'http://relations:80/sent-invitations/' + request.user.username
     d = json.dumps({"invited" : request.POST['invited']})
     h = {"Content-Type" : "application/json"}
-    r = requests.delete(url, data = d, headers = h)
+    r = requests.put(url, data = d, headers = h)
 
 
 def dodaj(request):

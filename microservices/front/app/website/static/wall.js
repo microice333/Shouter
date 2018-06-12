@@ -71,6 +71,7 @@ $().ready(function() {
 
     $('.invitation-btn').click(function() {
         if (~($(this).hasClass('disabled'))) {
+            alert($(this).attr('id').substring(11))
             $.post('/ajax/invite/',
                 {
                   'invited': $(this).attr('id').substring(11),

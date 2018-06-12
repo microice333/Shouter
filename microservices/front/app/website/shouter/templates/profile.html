@@ -8,12 +8,32 @@
     {% if user.is_authenticated %}
     <p> Widaj zautentukowany uzytkowniku. :)</p>
     <p> Znam twój username hehe :) : {{ user.username }} </p>
-    <h4> Całe info </h4>
-    <p>{{ url }}</p>
-    <p>{{ info }}</p>
-    <h4> Znajomi </h4>
-    <p>{{ friends }}</p>
-    <p>{{ names }}</p>
+    <h4> Tyle o tobie wiemy </h4>
+    <table class="table">
+      {% for e in userinfo %}
+        <tr>
+          <th> {{ e.0 }} </th>
+          <th> {{ e.1 }} </th>
+        </tr>
+      {% endfor %}
+    </table>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h4> Zaproszeni</h4>
+            <p>{{ invited_raw }}</p>
+        </div>
+        <div class="col">
+          <h4> Znajomi </h4>
+            <p>{{ friends }}</p>
+            <p>{{ names_raw }}</p>
+        </div>
+        <div class="col">
+          <h4> Oczekujace </h4>
+            <p>{{ invitations_raw }}</p>
+        </div>
+      </div>
+    </div>
     {% else %}
     <p>Nic nie zobaczysz. Zaloguj się.</p>
     {% endif %}

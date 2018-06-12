@@ -36,14 +36,19 @@
           {% endif %}
           </button>
           <!-- <span class="like-nb">0</span> -->
-
+          {% if message.author in invited %}
+          <button type="button" id="invitation-{{message.author}}"
+              class="btn btn-default btn-sm invitation-btn disabled">Invited</button>
+          {% else %}
           <button type="button" id="invitation-{{message.author}}"
               class="btn btn-default btn-sm invitation-btn">Add friend</button>
+          {% endif %}
         </div>
       </div>
       {% endfor %}
     </div>
     <p>{{ messages_raw }}</p>
+    <p>{{ invited_raw}}</p>
     {% else %}
     <p>Nic nie zobaczysz. Zaloguj się.</p>
     {% endif %}
