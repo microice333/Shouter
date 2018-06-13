@@ -2,20 +2,29 @@
 Shouter is project based on microservices architecture
 
 To run:
+
 make init
 
-cd microservices/users
-make build
+cd microservices/users  
+
+make build 
+
 make start
 
-cd microservices/relations
-make build
+cd microservices/relations  
+
+make build  
+
 make start
 
-cd microservices/messages
-make build
+cd microservices/messages  
+
+make build 
+
 make start
 
 cd microservices/front
-make build
+
+make build  
+
 make start
