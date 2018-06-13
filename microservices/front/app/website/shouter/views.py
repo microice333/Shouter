@@ -106,25 +106,22 @@ def like(request):
         host='message-broker'))
     channel = connection.channel()
 
-    channel.exchange_declare(exchange='enter-game',
+    channel.exchange_declare(exchange='likes',
                              exchange_type='fanout')
 
-    message = 'Entered the game'
-    channel.basic_publish(exchange='enter-game',
+    channel.basic_publish(exchange='likes',
                           routing_key='',
-                          body=message)
-    print(" [x] Sent enter-game message")
-
+                          body=request.POST['message_id'])
     connection.close()
 
-    url = 'http://messages/like/' + request.user.username
+    url = 'http://messages:80/like/' + request.user.username
     d = json.dumps({"idx" : request.POST['message_id']})
     h = {"Content-Type" : "application/json"}
     r = requests.put(url, data = d, headers = h)
 
 @require_POST
 def unlike(request):
-    url = 'http://messages/like/' + request.user.username
+    url = 'http://messages:80/like/' + request.user.username
     d = json.dumps({"idx" : request.POST['message_id']})
     h = {"Content-Type" : "application/json"}
     r = requests.delete(url, data = d, headers = h)

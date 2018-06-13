@@ -66,5 +66,16 @@ def like(username):
         return jsonify({'message': message, 'author': author, 'liked': False, 'id': idx})
 
 
+@app.route("/likes/<idx>", methods=['PUT', 'GET'])
+def likes(idx):
+    if request.method == 'PUT':
+        author = redis.get(f"authors/{idx}")
+        redis.incr(f"likes/{author}")
+
+        return jsonify({})
+    elif request.method == 'GET':
+        return jsonify({'likes': redis.get(f"likes/{idx}")})
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80)
