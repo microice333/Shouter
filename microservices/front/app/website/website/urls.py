@@ -31,6 +31,4 @@ urlpatterns = [
     path('ajax/unlike/', shouter.views.unlike, name='ajax-unlike'),
     path('ajax/invite/', shouter.views.invite, name='ajax-invite'),
     path('ajax/accept/', shouter.views.accept, name='ajax-accept'),
-    path('dodaj/', shouter.views.dodaj, name='dodaj'),
-    path('pokaz/', shouter.views.pokaz, name='pokaz'),
 ]

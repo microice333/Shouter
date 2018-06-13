@@ -139,19 +139,3 @@ def accept(request):
     d = json.dumps({"related_username" : request.POST['invited']})
     h = {"Content-Type" : "application/json"}
     r = requests.put(url, data = d, headers = h)
-
-
-def dodaj(request):
-    j = {'name' : 'john', 'mail' : 'john'}
-    s = json.dumps(j)
-    h = {"Content-Type" : "application/json"}
-    r = requests.put('http://users:80/user/john', data = s, headers = h)
-
-    return HttpResponse(r.text)
-
-def pokaz(request):
-    h = {"Content-Type" : "application/json"}
-    r = requests.get('http://users:80/user/john')
-    print(r.url)
-
-    return HttpResponse(r.text)
