@@ -75,6 +75,9 @@ def profile(request):
                 ('Email', info['mail']),
                 ('Number of published messages', info['messages'])]
 
+    if 'likes' in info.keys():
+        userinfo.append(('Number of likes you\'ve received', info['likes']))
+
     url = 'http://relations:80/sent-invitations/' + request.user.username
     r = requests.get(url)
     invited = get_object_or_empty(r.json(), 'invitations')
