@@ -11,6 +11,15 @@ services:
       - messages-1
       - internal-1
 
+  likes_consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile_likes
+    command: "python likes.py"
+    networks:
+      - messages-1
+      - internal-1
+
   redis:
     image: redis:4.0.2
     networks:
