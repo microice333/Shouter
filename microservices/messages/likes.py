@@ -15,7 +15,13 @@ channel.queue_bind(exchange='likes',
 
 def callback(ch, method, properties, body):
     idx = body.decode('UTF-8')
-    requests.put(f"http://messages:80/likes/{idx}")
+
+    if idx[0] == 'l':
+        idx = idx[1:]
+        requests.post(f"http://messages:80/likes/{idx}")
+    else:
+        idx = idx[1:]
+        requests.delete(f"http://messages:80/likes/{idx}")
 
 
 channel.basic_consume(callback,

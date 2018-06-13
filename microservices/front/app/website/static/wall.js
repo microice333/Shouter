@@ -54,7 +54,7 @@ $().ready(function() {
             );
             $(this).removeClass("like btn-outline-primary").addClass("unlike btn-primary");
             $(this).text("Unlike");
-            // $(this).parent().children(".like-nb").text($(this).parent().children(".like-nb").text() +1);
+            $(this).parent().children(".like-nb").text($(this).parent().children(".like-nb").text() +1);
         } else {
           $.post('/ajax/unlike/',
               {
@@ -65,7 +65,7 @@ $().ready(function() {
                 alert(res);
               }
           );
-          // $(this).removeClass("unlike btn-primary").addClass("like btn-outline-primary");
+          $(this).removeClass("unlike btn-primary").addClass("like btn-outline-primary");
           $(this).text("Like");
           $(this).parent().children(".like-nb").text($(this).parent().children(".like-nb").text() -1);
         }
