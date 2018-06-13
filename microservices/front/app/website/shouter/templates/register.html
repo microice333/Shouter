@@ -3,9 +3,8 @@
 {% block subtitile %}Registration{% endblock %}
 
 {% block content %}
-<div class="container content">
-  </form>
-  <form action="{% url 'register' %}" method="POST">
+<div class="first container content">
+  <form class="first" action="{% url 'register' %}" method="POST">
     {% csrf_token %}
     <div class="form-group">
       <label for="name">Nazwa użytkownika:</label>

@@ -1,0 +1,17 @@
+form label, input, button {
+  padding: 0.5em;
+}
+
+#form {
+  margin: auto;
+  width: 60%;
+}
+
+.invitation-btn {
+  float: right;
+}
+
+#size {
+  width: 100%;
+  margin:auto;
+}

@@ -54,6 +54,7 @@ $().ready(function() {
             );
             $(this).removeClass("like btn-outline-primary").addClass("unlike btn-primary");
             $(this).text("Unlike");
+            // $(this).parent().children(".like-nb").text($(this).parent().children(".like-nb").text() +1);
         } else {
           $.post('/ajax/unlike/',
               {
@@ -64,8 +65,9 @@ $().ready(function() {
                 alert(res);
               }
           );
-          $(this).removeClass("unlike btn-primary").addClass("like btn-outline-primary");
+          // $(this).removeClass("unlike btn-primary").addClass("like btn-outline-primary");
           $(this).text("Like");
+          $(this).parent().children(".like-nb").text($(this).parent().children(".like-nb").text() -1);
         }
     });
 
@@ -83,26 +85,6 @@ $().ready(function() {
             var selector = '#' + $(this).attr('id') + '.invitation-btn';
             $(selector).addClass("disabled");
             $(selector).text("Invited");
-          }
-    });
-
-
-// profile.js
-
-    $('.accept-btn').click(function() {
-        if (!($(this).hasClass('disabled'))) {
-            alert($(this).attr('id').substring(7))
-            $.post('/ajax/accept/',
-                {
-                  'invited': $(this).attr('id').substring(7),
-                  'csrfmiddlewaretoken': getCookie('csrftoken'),
-                },
-                function(res) {
-                  alert(res);
-                }
-            );
-            $(this).addClass("disabled");
-            $(this).text("Accepted");
           }
     });
 });

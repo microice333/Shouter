@@ -2,57 +2,57 @@
 
 {% block subtitile %}{% endblock %}
 
+{% load static %}
+{% block js %}
+<script src="{% static 'profile.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
 <article class="container content">
     {% if user.is_authenticated %}
-    <p> Widaj zautentukowany uzytkowniku. :)</p>
-    <p> Znam twój username hehe :) : {{ user.username }} </p>
-    <h4> Tyle o tobie wiemy </h4>
-    <table class="table">
-      {% for e in userinfo %}
-        <tr>
-          <th> {{ e.0 }} </th>
-          <td> {{ e.1 }} </td>
-        </tr>
-      {% endfor %}
-    </table>
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <h4> Zaproszeni</h4>
-            <table class="table">
-              {% for name in invited %}
-              <tr><td>{{ name }}</td></tr>
-              {% endfor %}
-            </table>
-            <p>{{ invited_raw }}</p>
-        </div>
-        <div class="col">
-          <h4> Znajomi </h4>
-            <table class="table">
-              {% for f in friends %}
-              <tr>
-                <td>{{ f.username }}</td>
-                <td>{{ f.mail }}</td>
-              </tr>
-              {% endfor %}
-            </table>
-            <p>{{ names_raw }}</p>
-        </div>
-        <div class="col">
-          <h4> Oczekujace </h4>
-            <table class="table">
-              {% for name in invitations %}
-              <tr>
-                <td>{{ name }}</td>
-                <td><button type="button" id="accept-{{name}}"
-                    class="btn btn-default btn-sm accept-btn">Accept</button></td>
-              </tr>
-              {% endfor %}
-            </table>
-            <p>{{ invitations_raw }}</p>
-        </div>
+    <div class="row main-info">
+      <h4> Tyle o tobie wiemy </h4>
+      <table class="table">
+        {% for e in userinfo %}
+          <tr>
+            <th> {{ e.0 }} </th>
+            <td> {{ e.1 }} </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h4> Zaproszeni</h4>
+          <table class="table">
+            {% for name in invited %}
+            <tr><td>{{ name }}</td></tr>
+            {% endfor %}
+          </table>
+      </div>
+      <div class="col">
+        <h4> Znajomi </h4>
+          <table class="table">
+            {% for f in friends %}
+            <tr>
+              <td>{{ f.username }}</td>
+              <td>{{ f.mail }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+      </div>
+      <div class="col">
+        <h4> Oczekujace </h4>
+          <table class="table">
+            {% for name in invitations %}
+            <tr>
+              <td>{{ name }}</td>
+              <td><button type="button" id="accept-{{name}}"
+                  class="btn btn-default btn-sm accept-btn">Accept</button></td>
+            </tr>
+            {% endfor %}
+          </table>
       </div>
     </div>
     {% else %}

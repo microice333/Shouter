@@ -22,7 +22,7 @@ import shouter.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('logout/', logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
+    path('logout/', logout, {'next_page': 'login'}, name='logout'),
     path('wall/', shouter.views.wall, name = 'wall'),
     path('', shouter.views.login, name='login'),
     path('register/', shouter.views.register, name='register'),
@@ -30,7 +30,7 @@ urlpatterns = [
     path('ajax/like/', shouter.views.like, name='ajax-like'),
     path('ajax/unlike/', shouter.views.unlike, name='ajax-unlike'),
     path('ajax/invite/', shouter.views.invite, name='ajax-invite'),
-    path('ajax/accept/', shouter.views.accept, name='ajax-accept'),    
+    path('ajax/accept/', shouter.views.accept, name='ajax-accept'),
     path('dodaj/', shouter.views.dodaj, name='dodaj'),
     path('pokaz/', shouter.views.pokaz, name='pokaz'),
 ]

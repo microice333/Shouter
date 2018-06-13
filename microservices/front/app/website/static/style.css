@@ -16,6 +16,8 @@ table {
   margin-top: 100px;
 }
 
-form label, input, button {
-  padding: 0.5em;
+.first {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
 }

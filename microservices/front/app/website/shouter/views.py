@@ -10,6 +10,11 @@ import pika
 
 # Create your views here.
 
+def get_object_or_empty(json, str):
+    if str in json.keys():
+        return json[str]
+    return []
+
 def login(request):
     if request.method == "POST":
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
@@ -50,13 +55,11 @@ def wall(request):
     wall = True
     url = 'http://messages:80/messages_for/' + request.user.username
     r = requests.get(url)
-    messages_raw = r.text
-    messages = r.json()['messages']
+    messages = get_object_or_empty(r.json(), 'messages')
 
     url = 'http://relations:80/sent-invitations/' + request.user.username
     r = requests.get(url)
-    invited_raw = r.text
-    invited = r.json()['invitations']
+    invited = get_object_or_empty(r.json(), 'invitations')
 
     return render(request, 'wall.html', locals())
 
@@ -74,18 +77,15 @@ def profile(request):
 
     url = 'http://relations:80/sent-invitations/' + request.user.username
     r = requests.get(url)
-    invited_raw = r.text
-    invited = r.json()['invitations']
+    invited = get_object_or_empty(r.json(), 'invitations')
 
     url = 'http://relations:80/received-invitations/' + request.user.username
     r = requests.get(url)
-    invitations_raw = r.text
-    invitations = r.json()['invitations']
+    invitations = get_object_or_empty(r.json(), 'invitations')
 
     url = 'http://relations:80/relations/' + request.user.username
     r = requests.get(url)
-    names_raw = r.text
-    friends_names = r.json()['relations']
+    friends_names = get_object_or_empty(r.json(), 'relations')
 
     friends_profiles = []
     for name in friends_names:
@@ -103,22 +103,25 @@ def like(request):
         host='message-broker'))
     channel = connection.channel()
 
-    channel.exchange_declare(exchange='likes',
+    channel.exchange_declare(exchange='enter-game',
                              exchange_type='fanout')
 
-    channel.basic_publish(exchange='likes',
+    message = 'Entered the game'
+    channel.basic_publish(exchange='enter-game',
                           routing_key='',
-                          body=request.user.username)
+                          body=message)
+    print(" [x] Sent enter-game message")
+
     connection.close()
 
-    url = 'http://messages:80/like/' + request.user.username
+    url = 'http://messages/like/' + request.user.username
     d = json.dumps({"idx" : request.POST['message_id']})
     h = {"Content-Type" : "application/json"}
     r = requests.put(url, data = d, headers = h)
 
 @require_POST
 def unlike(request):
-    url = 'http://messages:80/like/' + request.user.username
+    url = 'http://messages/like/' + request.user.username
     d = json.dumps({"idx" : request.POST['message_id']})
     h = {"Content-Type" : "application/json"}
     r = requests.delete(url, data = d, headers = h)
