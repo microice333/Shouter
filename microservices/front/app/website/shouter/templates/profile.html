@@ -12,7 +12,7 @@
 <article class="container content">
     {% if user.is_authenticated %}
     <div class="row main-info">
-      <h4> Tyle o tobie wiemy </h4>
+      <h4> What we know about you </h4>
       <table class="table">
         {% for e in userinfo %}
           <tr>
@@ -24,7 +24,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <h4> Zaproszeni</h4>
+        <h4> Invited </h4>
           <table class="table">
             {% for name in invited %}
             <tr><td>{{ name }}</td></tr>
@@ -32,7 +32,7 @@
           </table>
       </div>
       <div class="col">
-        <h4> Znajomi </h4>
+        <h4> Friends` </h4>
           <table class="table">
             {% for f in friends %}
             <tr>
@@ -43,7 +43,7 @@
           </table>
       </div>
       <div class="col">
-        <h4> Oczekujace </h4>
+        <h4> Invitations </h4>
           <table class="table">
             {% for name in invitations %}
             <tr>

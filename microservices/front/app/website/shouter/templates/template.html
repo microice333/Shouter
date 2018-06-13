@@ -24,18 +24,18 @@
       <span class="ml-auto">
         {% if user.is_authenticated %}
           <span class="navbar-text">
-            Witaj, {{ request.user.username }}
+            Hello, {{ request.user.username }}
           </span>
-          <a class="btn btn-outline-secondary btn-sm" href="{% url 'logout' %}" role="button">Wyloguj się</a>
+          <a class="btn btn-outline-secondary btn-sm" href="{% url 'logout' %}" role="button">Log out</a>
         {% else %}
           <span class="navbar-text">
-            Witaj,
+            Hello,
           </span>
-          <a class="btn btn-outline-primary btn-sm" href="{% url 'login' %}" role="button">Zaloguj się</a>
+          <a class="btn btn-outline-primary btn-sm" href="{% url 'login' %}" role="button">Log in</a>
           <span class="navbar-text">
-            lub
+            or
           </span>
-          <a class="btn btn-outline-success btn-sm" href="{% url 'register' %}" role="button">Zarejestruj</a>
+          <a class="btn btn-outline-success btn-sm" href="{% url 'register' %}" role="button">Register</a>
         {% endif %}
       </span>
     </nav>
