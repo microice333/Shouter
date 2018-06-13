@@ -5,10 +5,26 @@ To run:
 
 make init
 
-cd microservices/users  make build  make start
+cd microservices/users  
 
-cd microservices/relations  make build  make start
+make build 
 
-cd microservices/messages  make build  make start
+make start
 
-cd microservices/front  make build  make start
+cd microservices/relations  
+
+make build  
+
+make start
+
+cd microservices/messages  
+
+make build 
+
+make start
+
+cd microservices/front
+
+make build  
+
+make start
