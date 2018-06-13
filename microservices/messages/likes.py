@@ -7,8 +7,8 @@ channel = connection.channel()
 channel.exchange_declare(exchange='likes',
                          exchange_type='fanout')
 
-result = channel.queue_declare(exclusive=True)
 queue_name = "likes"
+result = channel.queue_declare(exclusive=True, queue=queue_name)
 channel.queue_bind(exchange='likes',
                    queue=queue_name)
 
