@@ -66,11 +66,16 @@ def like(username):
         return jsonify({'message': message, 'author': author, 'liked': False, 'id': idx})
 
 
-@app.route("/likes/<idx>", methods=['PUT', 'GET'])
+@app.route("/likes/<idx>", methods=['POST', 'GET', 'DELETE'])
 def likes(idx):
-    if request.method == 'PUT':
+    if request.method == 'POST':
         author = redis.get(f"authors/{idx}")
         redis.incr(f"likes/{author}")
+
+        return jsonify({})
+    elif request.method == 'DELETE':
+        author = redis.get(f"authors/{idx}")
+        redis.decr(f"likes/{author}")
 
         return jsonify({})
     elif request.method == 'GET':

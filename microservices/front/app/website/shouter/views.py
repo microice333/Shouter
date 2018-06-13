@@ -111,7 +111,7 @@ def like(request):
 
     channel.basic_publish(exchange='likes',
                           routing_key='',
-                          body=request.POST['message_id'])
+                          body="l" + request.POST['message_id'])
     connection.close()
 
     url = 'http://messages:80/like/' + request.user.username
@@ -121,6 +121,18 @@ def like(request):
 
 @require_POST
 def unlike(request):
+    connection = pika.BlockingConnection(pika.ConnectionParameters(
+        host='message-broker'))
+    channel = connection.channel()
+
+    channel.exchange_declare(exchange='likes',
+                             exchange_type='fanout')
+
+    channel.basic_publish(exchange='likes',
+                          routing_key='',
+                          body="u" + request.POST['message_id'])
+    connection.close()
+
     url = 'http://messages:80/like/' + request.user.username
     d = json.dumps({"idx" : request.POST['message_id']})
     h = {"Content-Type" : "application/json"}
